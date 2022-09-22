@@ -1,10 +1,14 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/signup/components/field_title.dart';
+import 'package:xlo_mobx/stores/signup_store.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  SignUpScreen({Key? key}) : super(key: key);
+
+  final SignupStore signupStore = SignupStore();
 
   @override
   Widget build(BuildContext context) {
@@ -14,115 +18,123 @@ class SignUpScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        padding: const EdgeInsets.only(top: 10),
         child: SingleChildScrollView(
-          child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            elevation: 16,
-            margin: const EdgeInsets.symmetric(horizontal: 32),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children:  [
-                  FieldTitle(title: 'Apelido ', subtitle: 'Como aparecerá em seus anúncios',),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Exemplo: João S',
-                      isDense: true,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Card(
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 16,
+              margin: const EdgeInsets.symmetric(horizontal: 32),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children:  [
+                    FieldTitle(title: 'Apelido ', subtitle: 'Como aparecerá em seus anúncios',),
+                    Observer(
+                      builder: (_){
+                        return TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Exemplo: João S',
+                            isDense: true,
+                            errorText: signupStore.nameError,
+                          ),
+                          onChanged: signupStore.setName,
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  FieldTitle(title: 'E-mail ', subtitle: 'Enviaremos um e-mail de confirmação',),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'exemplo@email.com',
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                  ),
-                  const SizedBox(height: 16),
-                  FieldTitle(title: 'Celular ', subtitle: 'Proteja sua Conta',),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '(99) 9 9999-9999',
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter(),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  FieldTitle(title: 'Senha ', subtitle: 'Use letras, números e caracteres especiais',),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 16),
-                  FieldTitle(title: 'Confirmar senha ', subtitle: 'Repita a senha',),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 12),
-                    height: 35,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        disabledBackgroundColor: Colors.orangeAccent,
-                        backgroundColor: Colors.deepOrange,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
+                    const SizedBox(height: 16),
+                    FieldTitle(title: 'E-mail ', subtitle: 'Enviaremos um e-mail de confirmação',),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'exemplo@email.com',
+                        isDense: true,
                       ),
-                      onPressed: () {},
-                      child: Text(
-                        'Cadastrar',
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Já possui umma conta?',
-                        style: TextStyle(
-                          color: Colors.grey[800],
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                    const SizedBox(height: 16),
+                    FieldTitle(title: 'Celular ', subtitle: 'Proteja sua Conta',),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: '(99) 9 9999-9999',
+                        isDense: true,
+                      ),
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TelefoneInputFormatter(),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    FieldTitle(title: 'Senha ', subtitle: 'Use letras, números e caracteres especiais',),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 16),
+                    FieldTitle(title: 'Confirmar senha ', subtitle: 'Repita a senha',),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 12),
+                      height: 35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          disabledBackgroundColor: Colors.orangeAccent,
+                          backgroundColor: Colors.deepOrange,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          'Cadastrar',
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: Navigator.of(context).pop,
-                        child: const Text(
-                          'Entrar',
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Já possui umma conta?',
                           style: TextStyle(
-                              color: Colors.purple,
-                              decoration: TextDecoration.underline,
-                              fontSize: 15),
+                            color: Colors.grey[800],
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                ],
+                        GestureDetector(
+                          onTap: Navigator.of(context).pop,
+                          child: const Text(
+                            'Entrar',
+                            style: TextStyle(
+                                color: Colors.purple,
+                                decoration: TextDecoration.underline,
+                                fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                  ],
+                ),
               ),
             ),
           ),
