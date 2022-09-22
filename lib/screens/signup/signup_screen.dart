@@ -22,8 +22,8 @@ class SignUpScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Card(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 16,
               margin: const EdgeInsets.symmetric(horizontal: 32),
               child: Padding(
@@ -31,11 +31,15 @@ class SignUpScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children:  [
-                    FieldTitle(title: 'Apelido ', subtitle: 'Como aparecerá em seus anúncios',),
+                  children: [
+                    FieldTitle(
+                      title: 'Apelido ',
+                      subtitle: 'Como aparecerá em seus anúncios',
+                    ),
                     Observer(
-                      builder: (_){
+                      builder: (_) {
                         return TextField(
+                          enabled: !signupStore.loading,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Exemplo: João S',
@@ -47,24 +51,31 @@ class SignUpScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 16),
-                    FieldTitle(title: 'E-mail ', subtitle: 'Enviaremos um e-mail de confirmação',),
-                    Observer(builder: (_){
+                    FieldTitle(
+                      title: 'E-mail ',
+                      subtitle: 'Enviaremos um e-mail de confirmação',
+                    ),
+                    Observer(builder: (_) {
                       return TextField(
+                        enabled: !signupStore.loading,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'exemplo@email.com',
-                          isDense: true,
-                          errorText: signupStore.emailError
-                        ),
+                            border: OutlineInputBorder(),
+                            hintText: 'exemplo@email.com',
+                            isDense: true,
+                            errorText: signupStore.emailError),
                         keyboardType: TextInputType.emailAddress,
                         autocorrect: false,
                         onChanged: signupStore.setEmail,
                       );
                     }),
                     const SizedBox(height: 16),
-                    FieldTitle(title: 'Celular ', subtitle: 'Proteja sua Conta',),
-                    Observer(builder: (_){
+                    FieldTitle(
+                      title: 'Celular ',
+                      subtitle: 'Proteja sua Conta',
+                    ),
+                    Observer(builder: (_) {
                       return TextField(
+                        enabled: !signupStore.loading,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: '(99) 9 9999-9999',
@@ -80,9 +91,13 @@ class SignUpScreen extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 16),
-                    FieldTitle(title: 'Senha ', subtitle: 'Use letras, números e caracteres especiais',),
-                    Observer(builder: (_){
+                    FieldTitle(
+                      title: 'Senha ',
+                      subtitle: 'Use letras, números e caracteres especiais',
+                    ),
+                    Observer(builder: (_) {
                       return TextField(
+                        enabled: !signupStore.loading,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           isDense: true,
@@ -93,43 +108,53 @@ class SignUpScreen extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 16),
-                    FieldTitle(title: 'Confirmar senha ', subtitle: 'Repita a senha',),
-                    Observer(builder: (_){
+                    FieldTitle(
+                      title: 'Confirmar senha ',
+                      subtitle: 'Repita a senha',
+                    ),
+                    Observer(builder: (_) {
                       return TextField(
+                        enabled: !signupStore.loading,
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          isDense: true,
-                          errorText: signupStore.pass2Error
-                        ),
+                            border: const OutlineInputBorder(),
+                            isDense: true,
+                            errorText: signupStore.pass2Error),
                         obscureText: true,
                         onChanged: signupStore.setPass2,
                       );
                     }),
                     const SizedBox(height: 16),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 12),
-                      height: 35,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.orangeAccent,
-                          backgroundColor: Colors.deepOrange,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
+                    Observer(builder: (_) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 12),
+                        height: 35,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            disabledBackgroundColor: Colors.orangeAccent,
+                            backgroundColor: Colors.deepOrange,
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                          ),
+                          onPressed: signupStore.signUpPressed,
+                          child: signupStore.loading
+                              ? const CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white70),
+                                )
+                              : const Text(
+                                  'Cadastrar',
+                                  style: TextStyle(fontSize: 16),
+                                ),
                         ),
-                        onPressed: () {},
-                        child: Text(
-                          'Cadastrar',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ),
+                      );
+                    }),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Já possui umma conta?',
+                          'Já possui uma conta?',
                           style: TextStyle(
                             color: Colors.grey[800],
                             fontSize: 15,
@@ -138,7 +163,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: Navigator.of(context).pop,
-                          child: const Text(
+                          child: Text(
                             'Entrar',
                             style: TextStyle(
                                 color: Colors.purple,

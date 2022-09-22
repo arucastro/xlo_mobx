@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
 
@@ -93,4 +95,20 @@ abstract class _SignupStore with Store {
       return 'Senha não confere';
     }
   }
+
+  @computed
+  bool get isFormValid => nameValid && emailValid && phoneValid && pass1Valid && pass2Valid;
+
+  @computed
+  VoidCallback? get signUpPressed => (isFormValid && loading == false) ? _signUp : null;
+
+  @observable
+  bool loading = false;
+
+  Future<void> _signUp() async{
+    loading = true;
+    await Future.delayed(Duration(seconds: 3));
+    loading = false;
+  }
+
 }
