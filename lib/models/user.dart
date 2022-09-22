@@ -1,9 +1,14 @@
-class User{
-  User({this.name, this.email, this.phone, this.pass});
+enum UserType{ PARTICULAR, PROFESSIONAL}
 
-  String? name;
-  String? email;
-  String? phone;
-  String? pass;
+class User{
+  User({required this.name, required this.email, required this.phone, required this.pass, this.type = UserType.PARTICULAR});
+
+  String name;
+  String email;
+  String phone;
+  String pass;
+  UserType type;
+
+
 
 }
