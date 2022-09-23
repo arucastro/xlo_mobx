@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/stores/login_store.dart';
 
 import '../signup/signup_screen.dart';
@@ -30,6 +31,9 @@ class LoginScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Observer(builder: (_){
+                    return ErrorBox(message: loginStore.error);
+                  }),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 5,
