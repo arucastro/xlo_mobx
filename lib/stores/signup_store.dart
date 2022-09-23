@@ -82,6 +82,7 @@ abstract class _SignupStore with Store {
       return 'Senha muito curta';
     }
   }
+
   @observable
   String? pass2;
 

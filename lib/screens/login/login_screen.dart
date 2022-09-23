@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/stores/login_store.dart';
 
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final LoginStore loginStore = LoginStore();
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +64,18 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TextField(
-                    decoration:  InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !loginStore.loading,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                        errorText: loginStore.emailError,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: loginStore.setEmail,
+                    );
+                  }),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.all(3),
@@ -94,32 +103,44 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    obscureText: true,
-                  ),
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !loginStore.loading,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        errorText: loginStore.passError,
+                      ),
+                      obscureText: true,
+                      onChanged: loginStore.setPassword,
+                    );
+                  }),
                   const SizedBox(height: 16),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 12),
-                    height: 35,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        disabledBackgroundColor: Colors.orangeAccent,
-                        backgroundColor: Colors.deepOrange,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
+                  Observer(builder: (_) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      height: 35,
+                      child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                disabledBackgroundColor: Colors.orangeAccent,
+                                backgroundColor: Colors.deepOrange,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)),
+                              ),
+                              onPressed: loginStore.loginPressed,
+                              child: loginStore.loading
+                                  ? const CircularProgressIndicator(
+                                valueColor:
+                                AlwaysStoppedAnimation(Colors.white70),
+                              )
+                                  : const Text(
+                                'Entrar',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                    );
+                  }),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,7 +155,8 @@ class LoginScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SignUpScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignUpScreen()));
                         },
                         child: const Text(
                           'Cadastre-se',
