@@ -5,6 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/signup/components/field_title.dart';
 import 'package:xlo_mobx/stores/signup_store.dart';
 
+import '../../components/error_box.dart';
+
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
@@ -32,6 +34,11 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Observer(builder: (_){
+                      return ErrorBox(
+                        message: signupStore.error,
+                      );
+                    }),
                     FieldTitle(
                       title: 'Apelido ',
                       subtitle: 'Como aparecerá em seus anúncios',
@@ -126,7 +133,7 @@ class SignUpScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Container(
-                        margin: EdgeInsets.symmetric(vertical: 12),
+                        margin: const EdgeInsets.symmetric(vertical: 12),
                         height: 35,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -163,7 +170,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: Navigator.of(context).pop,
-                          child: Text(
+                          child: const Text(
                             'Entrar',
                             style: TextStyle(
                                 color: Colors.purple,

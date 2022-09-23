@@ -10,7 +10,7 @@ class FieldTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 4, bottom: 3),
+      padding: const EdgeInsets.only(left: 4, bottom: 3),
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [

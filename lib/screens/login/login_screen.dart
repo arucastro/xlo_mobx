@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16)),
                     ),
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       'Login com Facebook',
                       style: TextStyle(
                         fontSize: 16,
@@ -60,8 +60,8 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  TextField(
-                    decoration: const InputDecoration(
+                  const TextField(
+                    decoration:  InputDecoration(
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
@@ -94,16 +94,16 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  TextField(
+                  const TextField(
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(),
                       isDense: true,
                     ),
                     obscureText: true,
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 12),
+                    margin: const EdgeInsets.symmetric(vertical: 12),
                     height: 35,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16)),
                       ),
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         'Entrar',
                         style: TextStyle(fontSize: 16),
                       ),

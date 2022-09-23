@@ -107,6 +107,9 @@ abstract class _SignupStore with Store {
   @observable
   bool loading = false;
 
+  @observable
+  String? error;
+
   Future<void> _signUp() async{
     loading = true;
 
@@ -117,7 +120,13 @@ abstract class _SignupStore with Store {
       pass: pass1!,
     );
 
-    await UserRepository().signUp(user);
+    try {
+      final resultUser = await UserRepository().signUp(user);
+      print (resultUser);
+    }catch(e){
+      error = e.toString();
+    }
+
     loading = false;
   }
 
