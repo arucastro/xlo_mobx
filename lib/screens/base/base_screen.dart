@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../stores/page_store.dart';
+import '../create/create_screen.dart';
 import '../home/home_screen.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           HomeScreen(),
-          Container(color: Colors.yellowAccent),
+          CreateScreen(),
           Container(color: Colors.green),
           Container(color: Colors.orange),
           Container(color: Colors.blue),
