@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 
+import 'components/images_field.dart';
+
 class CreateScreen extends StatelessWidget {
   const CreateScreen({Key? key}) : super(key: key);
 
@@ -25,46 +27,45 @@ class CreateScreen extends StatelessWidget {
         padding: const EdgeInsets.only(top: 50),
         child: SingleChildScrollView(
           child: Card(
+            clipBehavior: Clip.antiAlias,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             elevation: 16,
             margin: const EdgeInsets.symmetric(horizontal: 25),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Título *',
-                      labelStyle: labelStyle,
-                      contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
-                    ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ImagesField(),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Título *',
+                    labelStyle: labelStyle,
+                    contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Descrição *',
-                      labelStyle: labelStyle,
-                      contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
-                    ),
-                    maxLines: null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Descrição *',
+                    labelStyle: labelStyle,
+                    contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Preço *',
-                      labelStyle: labelStyle,
-                      contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
-                      prefixText: 'R\$ ',
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CentavosInputFormatter(moeda: false),
-                    ],
+                  maxLines: null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Preço *',
+                    labelStyle: labelStyle,
+                    contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
+                    prefixText: 'R\$ ',
                   ),
-                ],
-              ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CentavosInputFormatter(moeda: false),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
