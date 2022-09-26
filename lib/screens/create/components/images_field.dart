@@ -6,6 +6,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/create/components/image_source_modal.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
+import 'image_dialog.dart';
+
 class ImagesField extends StatelessWidget {
   const ImagesField({Key? key, required this.createStore}) : super(key: key);
 
@@ -24,7 +26,8 @@ class ImagesField extends StatelessWidget {
       child: Observer(builder: (_) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: createStore.images.length < 5 ? createStore.images.length + 1 : 5,
+          itemCount:
+              createStore.images.length < 5 ? createStore.images.length + 1 : 5,
           itemBuilder: (_, index) {
             if (index == createStore.images.length) {
               return Padding(
@@ -65,12 +68,18 @@ class ImagesField extends StatelessWidget {
                   ),
                 ),
               );
-            }else {
+            } else {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: GestureDetector(
                   onTap: () {
-
+                    showDialog(
+                      context: context,
+                      builder: (_) => ImageDialog(
+                        image: createStore.images[index],
+                        onDelete: () => createStore.images.removeAt(index),
+                      ),
+                    );
                   },
                   child: CircleAvatar(
                     backgroundImage: FileImage(createStore.images[index]),
