@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
+import 'components/CategoryField.dart';
 import 'components/images_field.dart';
 
 class CreateScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class CreateScreen extends StatelessWidget {
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
-        title: Text('Criar Anúncio'),
+        title: const Text('Criar Anúncio'),
         centerTitle: true,
       ),
       body: Container(
@@ -54,6 +55,9 @@ class CreateScreen extends StatelessWidget {
                     contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
                   ),
                   maxLines: null,
+                ),
+                CategoryField(
+                  createStore: createStore,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
