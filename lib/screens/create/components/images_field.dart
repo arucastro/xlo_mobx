@@ -20,77 +20,102 @@ class ImagesField extends StatelessWidget {
       Navigator.of(context).pop();
     }
 
-    return Container(
-      color: Colors.grey[200],
-      height: 120,
-      child: Observer(builder: (_) {
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount:
-              createStore.images.length < 5 ? createStore.images.length + 1 : 5,
-          itemBuilder: (_, index) {
-            if (index == createStore.images.length) {
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: GestureDetector(
-                  onTap: () {
-                    if (Platform.isAndroid) {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (_) =>
-                            ImageSourceModal(onImageSelected: onImageSelected),
-                      );
-                    } else {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (_) =>
-                            ImageSourceModal(onImageSelected: onImageSelected),
-                      );
-                    }
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey[400],
-                    radius: 45,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.camera_alt,
-                          size: 50,
-                          color: Colors.white70,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          color: Colors.grey[200],
+          height: 120,
+          child: Observer(builder: (_) {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: createStore.images.length < 5
+                  ? createStore.images.length + 1
+                  : 5,
+              itemBuilder: (_, index) {
+                if (index == createStore.images.length) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (Platform.isAndroid) {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => ImageSourceModal(
+                                onImageSelected: onImageSelected),
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => ImageSourceModal(
+                                onImageSelected: onImageSelected),
+                          );
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey[400],
+                        radius: 45,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 50,
+                              color: Colors.white70,
+                            ),
+                            Text(
+                              'Inserir',
+                              style: TextStyle(color: Colors.white70),
+                            )
+                          ],
                         ),
-                        Text(
-                          'Inserir',
-                          style: TextStyle(color: Colors.white70),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            } else {
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ImageDialog(
-                        image: createStore.images[index],
-                        onDelete: () => createStore.images.removeAt(index),
                       ),
-                    );
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: FileImage(createStore.images[index]),
-                    radius: 45,
-                  ),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => ImageDialog(
+                            image: createStore.images[index],
+                            onDelete: () => createStore.images.removeAt(index),
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: FileImage(createStore.images[index]),
+                        radius: 45,
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
+          }),
+        ),
+        Observer(builder: (_) {
+          if (createStore.imagesError != null) {
+            return Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.red),
                 ),
-              );
-            }
-          },
-        );
-      }),
+              ),
+              padding: const EdgeInsets.all(6),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                createStore.imagesError!,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        }),
+      ],
     );
   }
 }
