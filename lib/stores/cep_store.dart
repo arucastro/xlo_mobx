@@ -10,7 +10,7 @@ class CepStore = _CepStore with _$CepStore;
 abstract class _CepStore with Store {
   _CepStore() {
     autorun((_) {
-      if(clearCep != 8){
+      if(clearCep.length != 8){
         _reset();
       }else{
         _searchCep();
@@ -19,7 +19,7 @@ abstract class _CepStore with Store {
   }
 
   @observable
-  String? cep;
+  String? cep = '';
 
   @action
   void setCep(String value) => cep = value;

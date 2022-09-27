@@ -22,7 +22,7 @@ class CepRepository {
     try {
       final response = await Dio().get<Map>(endpoint);
 
-      if (response.data!.containsKey('erro') && response.data!['erro']) {
+      if (response.data!.containsKey('erro')) {
         return Future.error('CEP Inválido');
       }
 
