@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/repositories/category_repository.dart';
+import 'package:xlo_mobx/repositories/cep_repository.dart';
 import 'package:xlo_mobx/repositories/ibge_repository.dart';
 import 'package:xlo_mobx/screens/base/base_screen.dart';
 import 'package:xlo_mobx/stores/category_store.dart';
@@ -16,6 +17,7 @@ void main() async {
   runApp(const MyApp());
 
   IBGERepository().getUFList().then((value) {});
+  //CepRepository().getAddressFromApi().then((value) => print (value));
 }
 
 void setupLocators(){
