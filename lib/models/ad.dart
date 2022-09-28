@@ -16,10 +16,10 @@ class Ad {
   Category? category;
 
   Address? address;
-  double? price;
+  num? price;
   bool? hidePhone;
 
-  AdStatus? status = AdStatus.PENDING;
+  AdStatus status = AdStatus.PENDING;
   DateTime? created;
 
   User? user;

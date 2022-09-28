@@ -105,9 +105,9 @@ abstract class _CreateStore with Store {
   void setPrice(String value) => priceText = value;
 
   @computed
-  double? get price {
+  num? get price {
     if (priceText != null && priceText!.contains(',')) {
-      return double.tryParse(priceText!.replaceAll(RegExp('[^0-9]'), ''))! /
+      return num.tryParse(priceText!.replaceAll(RegExp('[^0-9]'), ''))! /
           100;
     } else {
       return null;

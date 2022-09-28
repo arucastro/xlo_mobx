@@ -65,4 +65,11 @@ class UserRepository {
     return null;
   }
 
+  //logout provisorio
+  void doUserLogout() async {
+    final user = await ParseUser.currentUser();
+    var response = await user.logout();
+
+    print ('logout ${response.success}');
+  }
 }

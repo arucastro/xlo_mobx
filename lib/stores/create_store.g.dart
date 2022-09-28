@@ -42,11 +42,11 @@ mixin _$CreateStore on _CreateStore, Store {
   Address? get address => (_$addressComputed ??=
           Computed<Address?>(() => super.address, name: '_CreateStore.address'))
       .value;
-  Computed<double?>? _$priceComputed;
+  Computed<num?>? _$priceComputed;
 
   @override
-  double? get price => (_$priceComputed ??=
-          Computed<double?>(() => super.price, name: '_CreateStore.price'))
+  num? get price => (_$priceComputed ??=
+          Computed<num?>(() => super.price, name: '_CreateStore.price'))
       .value;
   Computed<bool>? _$formValidComputed;
 
