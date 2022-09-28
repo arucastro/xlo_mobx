@@ -1,20 +1,25 @@
+import 'dart:ui';
+
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/stores/cep_store.dart';
+
+import '../models/address.dart';
 
 part 'create_store.g.dart';
 
 class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
-
   ObservableList images = ObservableList();
 
   @computed
   bool get imagesValid => images.isNotEmpty;
+
   String? get imagesError {
-    if(imagesValid){
+    if (!showErrors || imagesValid) {
       return null;
-    }else{
+    } else {
       return 'Insira imagens.';
     }
   }
@@ -27,10 +32,11 @@ abstract class _CreateStore with Store {
 
   @computed
   bool get titleValid => title!.length >= 6;
+
   String? get titleError {
-    if(titleValid) {
+    if (!showErrors || titleValid) {
       return null;
-    } else if(title!.isEmpty) {
+    } else if (title!.isEmpty) {
       return 'Campo obrigatório!';
     } else {
       return 'Título muito curto.';
@@ -41,16 +47,17 @@ abstract class _CreateStore with Store {
   String? description = '';
 
   @action
-  void setDescription(String value) => title = value;
+  void setDescription(String value) => description = value;
 
   @computed
   bool get descValid => description!.length >= 10;
+
   String? get descError {
-    if(descValid){
+    if (!showErrors || descValid) {
       return null;
-    }else if(description!.isEmpty){
+    } else if (description!.isEmpty) {
       return 'Campo obrigatõrio!';
-    }else {
+    } else {
       return 'Descrição muito curta.';
     }
   }
@@ -61,10 +68,83 @@ abstract class _CreateStore with Store {
   @action
   void setCategory(Category value) => category = value;
 
+  @computed
+  bool get categoryValid => category != null;
+
+  String? get categoryError {
+    if (!showErrors || categoryValid) {
+      return null;
+    } else {
+      return 'Escolha uma categoria';
+    }
+  }
+
+  CepStore cepStore = CepStore();
+
+  @computed
+  Address? get address => cepStore.address;
+
+  bool get addressValid => address != null;
+
+  String? get addressError {
+    if (!showErrors || addressValid) {
+      return null;
+    } else {
+      return 'Campo Obrigatório';
+    }
+  }
+
+  @observable
+  String? priceText = '';
+
+  @action
+  void setPrice(String value) => priceText = value;
+
+  @computed
+  double? get price {
+    if (priceText != null && priceText!.contains(',')) {
+      return double.tryParse(priceText!.replaceAll(RegExp('[^0-9]'), ''))! /
+          100;
+    } else {
+      return null;
+    }
+  }
+
+  bool get priceValid => price != null && price! > 0 && price! <= 9999999;
+
+  String? get priceError {
+    if (!showErrors || priceValid) {
+      return null;
+    } else if (priceText!.isEmpty) {
+      return 'Campo obrigatório!';
+    } else {
+      return 'preço inválido';
+    }
+  }
+
   @observable
   bool hidePhone = false;
 
   @action
   void setHidePhone(bool? value) => hidePhone = value!;
 
+  @computed
+  bool get formValid =>
+      imagesValid &&
+      titleValid &&
+      descValid &&
+      categoryValid &&
+      addressValid &&
+      priceValid;
+
+  @computed
+  VoidCallback? get sendPressed => formValid ? _sendPressed : null;
+
+  @observable
+  bool showErrors = false;
+
+  @action
+  void invalidSendPressed() => showErrors = true;
+
+  void _sendPressed(){}
 }

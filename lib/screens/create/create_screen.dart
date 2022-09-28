@@ -31,7 +31,7 @@ class CreateScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        padding: const EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.only(top: 20),
         child: SingleChildScrollView(
           child: Card(
             clipBehavior: Clip.antiAlias,
@@ -67,37 +67,46 @@ class CreateScreen extends StatelessWidget {
                   CategoryField(
                     createStore: createStore,
                   ),
-                  CepField(),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Preço *',
-                      labelStyle: labelStyle,
-                      contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10),
-                      prefixText: 'R\$ ',
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CentavosInputFormatter(moeda: false),
-                    ],
-                  ),
+                  CepField(createStore: createStore),
+                  Observer(builder: (_){
+                    return TextFormField(
+                      onChanged: createStore.setPrice,
+                      decoration: InputDecoration(
+                        errorText: createStore.priceError,
+                        labelText: 'Preço *',
+                        labelStyle: labelStyle,
+                        contentPadding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
+                        prefixText: 'R\$ ',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CentavosInputFormatter(moeda: false),
+                      ],
+                    );
+                  }),
                   HidePhoneField(createStore: createStore),
-                  SizedBox(
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.orangeAccent,
-                          backgroundColor: Colors.deepOrange,
-                          elevation: 5,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                  Observer(builder: (_){
+                    return SizedBox(
+                      height: 50,
+                      child: GestureDetector(
+                        onTap: createStore.invalidSendPressed,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              disabledBackgroundColor: Colors.orangeAccent,
+                              backgroundColor: Colors.deepOrange,
+                              elevation: 5,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                          ),
+                          onPressed: createStore.sendPressed,
+                          child: const Text(
+                            'Enviar',
+                            style: TextStyle(fontSize: 18, letterSpacing: 0.3),
+                          ),
+                        ),
                       ),
-                      onPressed: (){},
-                      child: const Text(
-                        'Enviar',
-                        style: TextStyle(fontSize: 18, letterSpacing: 0.3),
-                      ),
-                    ),
-                  ),
+                    );
+                  })
                 ],
               );
             }),

@@ -29,6 +29,38 @@ mixin _$CreateStore on _CreateStore, Store {
   bool get descValid => (_$descValidComputed ??=
           Computed<bool>(() => super.descValid, name: '_CreateStore.descValid'))
       .value;
+  Computed<bool>? _$categoryValidComputed;
+
+  @override
+  bool get categoryValid =>
+      (_$categoryValidComputed ??= Computed<bool>(() => super.categoryValid,
+              name: '_CreateStore.categoryValid'))
+          .value;
+  Computed<Address?>? _$addressComputed;
+
+  @override
+  Address? get address => (_$addressComputed ??=
+          Computed<Address?>(() => super.address, name: '_CreateStore.address'))
+      .value;
+  Computed<double?>? _$priceComputed;
+
+  @override
+  double? get price => (_$priceComputed ??=
+          Computed<double?>(() => super.price, name: '_CreateStore.price'))
+      .value;
+  Computed<bool>? _$formValidComputed;
+
+  @override
+  bool get formValid => (_$formValidComputed ??=
+          Computed<bool>(() => super.formValid, name: '_CreateStore.formValid'))
+      .value;
+  Computed<VoidCallback?>? _$sendPressedComputed;
+
+  @override
+  VoidCallback? get sendPressed => (_$sendPressedComputed ??=
+          Computed<VoidCallback?>(() => super.sendPressed,
+              name: '_CreateStore.sendPressed'))
+      .value;
 
   late final _$titleAtom = Atom(name: '_CreateStore.title', context: context);
 
@@ -77,6 +109,22 @@ mixin _$CreateStore on _CreateStore, Store {
     });
   }
 
+  late final _$priceTextAtom =
+      Atom(name: '_CreateStore.priceText', context: context);
+
+  @override
+  String? get priceText {
+    _$priceTextAtom.reportRead();
+    return super.priceText;
+  }
+
+  @override
+  set priceText(String? value) {
+    _$priceTextAtom.reportWrite(value, super.priceText, () {
+      super.priceText = value;
+    });
+  }
+
   late final _$hidePhoneAtom =
       Atom(name: '_CreateStore.hidePhone', context: context);
 
@@ -90,6 +138,22 @@ mixin _$CreateStore on _CreateStore, Store {
   set hidePhone(bool value) {
     _$hidePhoneAtom.reportWrite(value, super.hidePhone, () {
       super.hidePhone = value;
+    });
+  }
+
+  late final _$showErrorsAtom =
+      Atom(name: '_CreateStore.showErrors', context: context);
+
+  @override
+  bool get showErrors {
+    _$showErrorsAtom.reportRead();
+    return super.showErrors;
+  }
+
+  @override
+  set showErrors(bool value) {
+    _$showErrorsAtom.reportWrite(value, super.showErrors, () {
+      super.showErrors = value;
     });
   }
 
@@ -130,6 +194,17 @@ mixin _$CreateStore on _CreateStore, Store {
   }
 
   @override
+  void setPrice(String value) {
+    final _$actionInfo = _$_CreateStoreActionController.startAction(
+        name: '_CreateStore.setPrice');
+    try {
+      return super.setPrice(value);
+    } finally {
+      _$_CreateStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setHidePhone(bool? value) {
     final _$actionInfo = _$_CreateStoreActionController.startAction(
         name: '_CreateStore.setHidePhone');
@@ -141,15 +216,33 @@ mixin _$CreateStore on _CreateStore, Store {
   }
 
   @override
+  void invalidSendPressed() {
+    final _$actionInfo = _$_CreateStoreActionController.startAction(
+        name: '_CreateStore.invalidSendPressed');
+    try {
+      return super.invalidSendPressed();
+    } finally {
+      _$_CreateStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 title: ${title},
 description: ${description},
 category: ${category},
+priceText: ${priceText},
 hidePhone: ${hidePhone},
+showErrors: ${showErrors},
 imagesValid: ${imagesValid},
 titleValid: ${titleValid},
-descValid: ${descValid}
+descValid: ${descValid},
+categoryValid: ${categoryValid},
+address: ${address},
+price: ${price},
+formValid: ${formValid},
+sendPressed: ${sendPressed}
     ''';
   }
 }
