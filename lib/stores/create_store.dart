@@ -156,6 +156,9 @@ abstract class _CreateStore with Store {
   @observable
   String? saveError;
 
+  @observable
+  bool savedAd = false;
+
   @action
   Future<void> _sendPressed() async{
     final ad = Ad();
@@ -170,7 +173,8 @@ abstract class _CreateStore with Store {
 
     loading = true;
     try {
-      final response = await AdRepository().save(ad);
+      await AdRepository().save(ad);
+      savedAd = true;
     } catch (e){
       saveError = e.toString();
     }

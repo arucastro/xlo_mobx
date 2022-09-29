@@ -1,11 +1,17 @@
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:path/path.dart' as path;
+import 'package:xlo_mobx/models/address.dart';
+import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/models/uf.dart';
 
 import 'dart:io';
 
 import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
+import 'package:xlo_mobx/repositories/user_repository.dart';
+
+import '../models/city.dart';
 
 class AdRepository {
   Future<void> save(Ad ad) async {
@@ -41,9 +47,7 @@ class AdRepository {
 
       final response = await adObject.save();
 
-      if (response.success) {
-        return response.result;
-      } else {
+      if (!response.success) {
         return Future.error(
             ParseErrors.getDescription(response.error!.code) as String);
       }
@@ -51,6 +55,28 @@ class AdRepository {
       return Future.error('Falha ao salvar anúncio');
     }
   }
+
+  /*Ad mapParseAd(ParseObject object){
+    return Ad(
+      id: object.objectId,
+      title: object.get<String>(keyAdTitle),
+      description: object.get<String>(keyAdDescription),
+      images: object.get<List>(keyAdImages)?.map((e) => e.url).toList(),
+      hidePhone: object.get<bool>(keyAdHidePhone),
+      price: object.get<num>(keyAdPrice),
+      created: object.createdAt,
+      address: Address(
+        district: object.get<String>(keyAdDistrict),
+        city: City(name: object.get<String>(keyAdCity)),
+        cep: object.get<String>(keyAdPostalCode),
+        uf: UF(initials: object.get<String>(keyAdFederativeUnit)),
+      ),
+      category: Category.fromParse(object.get<ParseObject>(keyAdCategory)!),
+      user: UserRepository().mapParseUser(object.get<ParseUser>(keyAdOwner)!),
+      views: object.get<int>(keyAdViews),
+      status: AdStatus.values[object.get<int>(keyAdStatus)!],
+    );
+  }*/
 
   Future<List<ParseFile>> saveImages(List images) async {
     final parseImages = <ParseFile>[];
