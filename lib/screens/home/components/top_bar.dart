@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/screens/category/category_screen.dart';
+import 'package:xlo_mobx/screens/filter/filter_screen.dart';
 
 import '../../../stores/home_store.dart';
 import 'bar_button.dart';
@@ -24,14 +25,13 @@ class TopBar extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              final category = await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        CategoryScreen(
-                          showAll: true,
-                          selected: homeStore.category,
-                        ),
-                  ));
+              final category =
+                  await Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => CategoryScreen(
+                  showAll: true,
+                  selected: homeStore.category,
+                ),
+              ));
               if (category != null) {
                 homeStore.setCategory(category);
               }
@@ -46,7 +46,13 @@ class TopBar extends StatelessWidget {
               left: BorderSide(color: Colors.grey[400]!),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => FilterScreen(),
+              ),
+            );
+          },
         ),
       ],
     );
