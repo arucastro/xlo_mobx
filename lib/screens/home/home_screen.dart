@@ -22,7 +22,6 @@ class HomeScreen extends StatelessWidget {
         ),
       );
       if (search != null) homeStore.setSearch(search);
-      print(homeStore.search);
     }
 
     return SafeArea(
