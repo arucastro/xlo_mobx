@@ -157,6 +157,46 @@ mixin _$CreateStore on _CreateStore, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: '_CreateStore.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$saveErrorAtom =
+      Atom(name: '_CreateStore.saveError', context: context);
+
+  @override
+  String? get saveError {
+    _$saveErrorAtom.reportRead();
+    return super.saveError;
+  }
+
+  @override
+  set saveError(String? value) {
+    _$saveErrorAtom.reportWrite(value, super.saveError, () {
+      super.saveError = value;
+    });
+  }
+
+  late final _$_sendPressedAsyncAction =
+      AsyncAction('_CreateStore._sendPressed', context: context);
+
+  @override
+  Future<void> _sendPressed() {
+    return _$_sendPressedAsyncAction.run(() => super._sendPressed());
+  }
+
   late final _$_CreateStoreActionController =
       ActionController(name: '_CreateStore', context: context);
 
@@ -235,6 +275,8 @@ category: ${category},
 priceText: ${priceText},
 hidePhone: ${hidePhone},
 showErrors: ${showErrors},
+loading: ${loading},
+saveError: ${saveError},
 imagesValid: ${imagesValid},
 titleValid: ${titleValid},
 descValid: ${descValid},
