@@ -23,18 +23,25 @@ mixin _$FilterStore on _FilterStore, Store {
           () => super.isTypeParticular,
           name: '_FilterStore.isTypeParticular'))
       .value;
+  Computed<bool>? _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_FilterStore.isFormValid'))
+          .value;
 
   late final _$orderByAtom =
       Atom(name: '_FilterStore.orderBy', context: context);
 
   @override
-  OrderBy get orderBy {
+  OrderBy? get orderBy {
     _$orderByAtom.reportRead();
     return super.orderBy;
   }
 
   @override
-  set orderBy(OrderBy value) {
+  set orderBy(OrderBy? value) {
     _$orderByAtom.reportWrite(value, super.orderBy, () {
       super.orderBy = value;
     });
@@ -76,13 +83,13 @@ mixin _$FilterStore on _FilterStore, Store {
       Atom(name: '_FilterStore.vendorType', context: context);
 
   @override
-  int get vendorType {
+  int? get vendorType {
     _$vendorTypeAtom.reportRead();
     return super.vendorType;
   }
 
   @override
-  set vendorType(int value) {
+  set vendorType(int? value) {
     _$vendorTypeAtom.reportWrite(value, super.vendorType, () {
       super.vendorType = value;
     });
@@ -143,7 +150,8 @@ minPrice: ${minPrice},
 maxPrice: ${maxPrice},
 vendorType: ${vendorType},
 priceError: ${priceError},
-isTypeParticular: ${isTypeParticular}
+isTypeParticular: ${isTypeParticular},
+isFormValid: ${isFormValid}
     ''';
   }
 }

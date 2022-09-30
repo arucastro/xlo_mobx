@@ -1,4 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/stores/home_store.dart';
 
 part 'filter_store.g.dart';
 
@@ -12,8 +14,10 @@ class FilterStore = _FilterStore with _$FilterStore;
 
 abstract class _FilterStore with Store {
 
+  _FilterStore({this.orderBy = OrderBy.DATE, this.minPrice, this.maxPrice, this.vendorType = VENDOR_TYPE_PARTICULAR});
+
   @observable
-  OrderBy orderBy = OrderBy.DATE;
+  OrderBy? orderBy;
 
   @action
   void setOrderBy(OrderBy value) => orderBy = value;
@@ -35,16 +39,32 @@ abstract class _FilterStore with Store {
   'Faixa de preço inválida' : null;
 
   @observable
-  int vendorType = 0;
+  int? vendorType;
 
   @action
   void selectVendorType(int value) => vendorType = value;
-  void setVendorType(int type) => vendorType = vendorType | type;
-  void resetVendorType(int type) => vendorType = vendorType & ~type;
+  void setVendorType(int type) => vendorType = vendorType! | type;
+  void resetVendorType(int type) => vendorType = vendorType! & ~type;
 
   //verifica se o tipo de vendedor é diferente de zero
   @computed
-  bool get isTypeParticular => (vendorType & VENDOR_TYPE_PARTICULAR) != 0;
-  bool get isTypeProfessional => (vendorType & VENDOR_TYPE_PROFESSIONAL) != 0;
+  bool get isTypeParticular => (vendorType! & VENDOR_TYPE_PARTICULAR) != 0;
+  bool get isTypeProfessional => (vendorType! & VENDOR_TYPE_PROFESSIONAL) != 0;
+
+  @computed
+  bool get isFormValid => priceError == null;
+
+  void save(){
+    GetIt.I<HomeStore>().setFilter(this as FilterStore);
+  }
+
+  FilterStore clone(){
+    return FilterStore(
+      orderBy: orderBy,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      vendorType: vendorType,
+    );
+  }
 
 }

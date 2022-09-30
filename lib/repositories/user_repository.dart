@@ -12,8 +12,8 @@ class UserRepository {
       user.email,
     );
     
-    parseUser.set<String>(keyUserName, user.name);
-    parseUser.set<String>(keyUserPhone, user.phone);
+    parseUser.set<String>(keyUserName, user.name!);
+    parseUser.set<String>(keyUserPhone, user.phone!);
     parseUser.set(keyUserType, user.type.index);
 
     final response = await parseUser.signUp();

@@ -47,7 +47,7 @@ class CustomDrawerHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    userManagerStore.isUserLogged ? userManagerStore.user!.name :
+                    userManagerStore.isUserLogged ? userManagerStore.user!.name! :
                     'Acesse sua conta!',
                     style: const TextStyle(
                         color: Colors.white70,
@@ -55,7 +55,7 @@ class CustomDrawerHeader extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    userManagerStore.isUserLogged ? userManagerStore.user!.email :
+                    userManagerStore.isUserLogged ? userManagerStore.user!.email! :
                     'Clique aqui.',
                     style: const TextStyle(
                         color: Colors.white70,
