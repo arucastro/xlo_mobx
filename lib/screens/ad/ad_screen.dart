@@ -3,7 +3,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/ad.dart';
+import 'components/description_panel.dart';
+import 'components/location_panel.dart';
 import 'components/main_panel.dart';
+import 'components/user_panel.dart';
 
 class AdScreen extends StatelessWidget {
   const AdScreen({Key? key, required this.ad}) : super(key: key);
@@ -15,7 +18,7 @@ class AdScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Anúncio'),
+        title: const Text('Anúncio'),
         centerTitle: true,
       ),
       body: ListView(
@@ -30,13 +33,17 @@ class AdScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 MainPanel(ad: ad),
-                Divider(color: Colors.black54),
-                
+                const Divider(color: Colors.black54, height: 2),
+                DescriptionPanel(ad: ad),
+                const Divider(color: Colors.black54, height: 2),
+                LocationPanel(ad: ad),
+                const Divider(color: Colors.black54, height: 2),
+                UserPanel(ad: ad),
               ],
             ),
           )
