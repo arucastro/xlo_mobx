@@ -17,11 +17,12 @@ import '../models/city.dart';
 
 class AdRepository {
   Future<List<Ad>> getHomeAdList(
-      {FilterStore? filter, String? search, Category? category}) async {
+      {FilterStore? filter, String? search, Category? category, int? page}) async {
     final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
     
     queryBuilder.includeObject([keyAdOwner, keyAdCategory]);
 
+    queryBuilder.setAmountToSkip(page! * 10);
     queryBuilder.setLimit(10);
 
     queryBuilder.whereEqualTo(keyAdStatus, AdStatus.ACTIVE.index);
