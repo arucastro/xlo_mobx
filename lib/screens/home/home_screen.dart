@@ -6,16 +6,24 @@ import 'package:xlo_mobx/stores/home_store.dart';
 
 import '../../components/custom_drawer/custom_drawer.dart';
 import 'components/ad_tile.dart';
+import 'components/create_ad_button.dart';
 import 'components/search_dialog.dart';
 import 'components/top_bar.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController scrollController = ScrollController();
+
+  final homeStore = GetIt.I<HomeStore>();
 
   @override
   Widget build(BuildContext context) {
-    final homeStore = GetIt.I<HomeStore>();
-
     openSearch(BuildContext context) async {
       final search = await showDialog(
         context: context,
@@ -77,67 +85,78 @@ class HomeScreen extends StatelessWidget {
           children: [
             TopBar(),
             Expanded(
-              child: Observer(builder: (_) {
-                if (homeStore.error != null) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const[
-                      Icon(
-                        Icons.error,
-                        size: 100,
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Ocorreu um Erro!',
-                        style: TextStyle(
+              child: Stack(
+                children: [
+                  Observer(builder: (_) {
+                    if (homeStore.error != null) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.error,
+                            size: 100,
                             color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20),
-                      )
-                    ],
-                  );
-                }
-                if(homeStore.showProgress){
-                  return const Center(child:CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(Colors.white),
-                  ));
-                }
-                if(homeStore.adList.isEmpty){
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const[
-                      Icon(
-                        Icons.border_clear,
-                        size: 100,
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Nenhum anúncio encontrado...',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20),
-                      )
-                    ],
-                  );
-                }
-                return ListView.builder(
-                    itemCount: homeStore.itemCount,
-                    itemBuilder: (_,index){
-                      if (index < homeStore.adList.length) {
-                        return AdTile(ad: homeStore.adList[index]);
-                      }
-                      homeStore.loadNextPage();
-                      return Container(
-                        height: 10,
-                        child: LinearProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.purple),
-                        ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Ocorreu um Erro!',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20),
+                          )
+                        ],
                       );
-                    });
-              }),
+                    }
+                    if (homeStore.showProgress) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ));
+                    }
+                    if (homeStore.adList.isEmpty) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.border_clear,
+                            size: 100,
+                            color: Colors.white,
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Nenhum anúncio encontrado...',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20),
+                          )
+                        ],
+                      );
+                    }
+                    return ListView.builder(
+                        controller: scrollController,
+                        itemCount: homeStore.itemCount,
+                        itemBuilder: (_, index) {
+                          if (index < homeStore.adList.length) {
+                            return AdTile(ad: homeStore.adList[index]);
+                          }
+                          homeStore.loadNextPage();
+                          return const SizedBox(
+                            height: 10,
+                            child: LinearProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.purple),
+                            ),
+                          );
+                        });
+                  }),
+                  Positioned(
+                    left: 100,
+                    bottom: -50,
+                    child: CreateAdButton(scrollController: scrollController),
+                  ),
+                ],
+              ),
             )
           ],
         ),
