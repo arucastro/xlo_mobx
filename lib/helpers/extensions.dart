@@ -16,6 +16,6 @@ extension NumberExtension on num {
 
 extension DateTimeExtension on DateTime{
   String formattedDate(){
-    return DateFormat('dd/MM/yyyy HH:mm', 'pt-BR').format(this);
+    return DateFormat('dd/MM/yyyy - HH:mm', 'pt-BR').format(this);
   }
 }
