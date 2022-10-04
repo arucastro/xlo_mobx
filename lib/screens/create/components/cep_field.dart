@@ -6,7 +6,7 @@ import 'package:xlo_mobx/stores/cep_store.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
 class CepField extends StatelessWidget {
-  CepField({Key? key, required this.createStore}) : cepStore = createStore.cepStore, super(key: key);
+  CepField({Key? key, required this.createStore}) : cepStore = createStore.cepStore!, super(key: key);
 
   final CreateStore createStore;
   final CepStore cepStore;
@@ -18,6 +18,7 @@ class CepField extends StatelessWidget {
       children: [
         Observer(builder: (_){
           return TextFormField(
+            initialValue: cepStore.cep,
             onChanged: cepStore.setCep,
             keyboardType: TextInputType.number,
             inputFormatters: [

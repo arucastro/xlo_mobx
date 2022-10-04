@@ -16,7 +16,7 @@ class Ad {
     id = object.objectId;
     title = object.get<String>(keyAdTitle);
     description = object.get<String>(keyAdDescription);
-    images = object.get<List>(keyAdImages)?.map((e) => e.url).toList();
+    images = object.get<List>(keyAdImages)!.map((e) => e.url).toList();
     hidePhone = object.get<bool>(keyAdHidePhone);
     price = object.get<num>(keyAdPrice);
     created = object.createdAt;
@@ -34,7 +34,7 @@ class Ad {
 
   Ad({
       this.id,
-      this.images,
+      this.images = const [],
       this.title,
       this.description,
       this.category,
@@ -48,7 +48,7 @@ class Ad {
 
   String? id;
 
-  List? images;
+  List images = [];
 
   String? title;
   String? description;
@@ -57,7 +57,7 @@ class Ad {
 
   Address? address;
   num? price;
-  bool? hidePhone;
+  bool? hidePhone = false;
 
   AdStatus status = AdStatus.PENDING;
   DateTime? created;

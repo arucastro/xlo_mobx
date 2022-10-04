@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/repositories/ad_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
@@ -15,6 +16,22 @@ part 'create_store.g.dart';
 class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
+
+  _CreateStore(Ad ad){
+    title = ad.title;
+    description = ad.description;
+    images = ad.images.asObservable();
+    category = ad.category;
+    priceText = ad.price?.toStringAsFixed(2);
+    hidePhone = ad.hidePhone ?? false;
+
+    if(ad.address != null){
+      cepStore = CepStore(ad.address!.cep);
+    }else{
+      cepStore = CepStore('');
+    }
+  }
+
   ObservableList images = ObservableList();
 
   @computed
@@ -83,10 +100,10 @@ abstract class _CreateStore with Store {
     }
   }
 
-  CepStore cepStore = CepStore();
+  CepStore? cepStore;
 
   @computed
-  Address? get address => cepStore.address;
+  Address? get address => cepStore!.address;
 
   bool get addressValid => address != null;
 
@@ -127,7 +144,7 @@ abstract class _CreateStore with Store {
   }
 
   @observable
-  bool hidePhone = false;
+  bool? hidePhone = false;
 
   @action
   void setHidePhone(bool? value) => hidePhone = value!;

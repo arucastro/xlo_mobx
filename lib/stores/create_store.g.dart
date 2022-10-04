@@ -129,13 +129,13 @@ mixin _$CreateStore on _CreateStore, Store {
       Atom(name: '_CreateStore.hidePhone', context: context);
 
   @override
-  bool get hidePhone {
+  bool? get hidePhone {
     _$hidePhoneAtom.reportRead();
     return super.hidePhone;
   }
 
   @override
-  set hidePhone(bool value) {
+  set hidePhone(bool? value) {
     _$hidePhoneAtom.reportWrite(value, super.hidePhone, () {
       super.hidePhone = value;
     });

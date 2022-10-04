@@ -14,13 +14,13 @@ class HidePhoneField extends StatelessWidget {
       child: Observer(builder: (_){
         return Row(
           children: [
-            Checkbox(value: createStore.hidePhone, onChanged: createStore.setHidePhone),
+            Checkbox(value: createStore.hidePhone ?? false, onChanged: createStore.setHidePhone),
             Expanded(
               child: Text(
                 'Ocultar telefone neste anúncio',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: createStore.hidePhone ? Colors.grey[700] : Colors.grey,
+                  color: createStore.hidePhone! ? Colors.grey[700] : Colors.grey,
                   fontSize: 18,
                 ),
               ),

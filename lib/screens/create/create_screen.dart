@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/components/error_box.dart';
+import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/create/components/cep_field.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
@@ -15,14 +16,21 @@ import 'components/hide_phone_field.dart';
 import 'components/images_field.dart';
 
 class CreateScreen extends StatefulWidget {
-  CreateScreen({Key? key}) : super(key: key);
+  const CreateScreen({Key? key, this.ad}) : super(key: key);
+
+  final Ad? ad;
 
   @override
-  State<CreateScreen> createState() => _CreateScreenState();
+  State<CreateScreen> createState() => _CreateScreenState(ad);
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final CreateStore createStore = CreateStore();
+
+  _CreateScreenState(Ad? ad) : editing = ad != null, createStore = CreateStore(ad ?? Ad());
+
+  bool editing = false;
+
+  final CreateStore createStore;
 
   @override
   void initState() {
@@ -42,9 +50,9 @@ class _CreateScreenState extends State<CreateScreen> {
     );
 
     return Scaffold(
-      drawer: CustomDrawer(),
+      drawer: editing ? null : const CustomDrawer(),
       appBar: AppBar(
-        title: const Text('Criar Anúncio'),
+        title: Text(editing ? 'Editar anúncio' : 'Criar anúncio'),
         centerTitle: true,
       ),
       body: Container(
@@ -86,6 +94,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   children: [
                     ImagesField(createStore: createStore),
                     TextFormField(
+                      initialValue: createStore.title ?? '',
                       onChanged: createStore.setTitle,
                       decoration: InputDecoration(
                         errorText: createStore.titleError,
@@ -96,6 +105,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       ),
                     ),
                     TextFormField(
+                      initialValue: createStore.description ?? '',
                       onChanged: createStore.setDescription,
                       decoration: InputDecoration(
                         errorText: createStore.descError,
@@ -112,6 +122,7 @@ class _CreateScreenState extends State<CreateScreen> {
                     CepField(createStore: createStore),
                     Observer(builder: (_) {
                       return TextFormField(
+                        initialValue: createStore.priceText ?? '',
                         onChanged: createStore.setPrice,
                         decoration: InputDecoration(
                           errorText: createStore.priceError,

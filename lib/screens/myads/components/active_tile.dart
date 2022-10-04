@@ -4,6 +4,7 @@ import 'package:xlo_mobx/helpers/extensions.dart';
 
 import '../../../models/ad.dart';
 import '../../ad/ad_screen.dart';
+import '../../create/create_screen.dart';
 
 class ActiveTile extends StatelessWidget {
   ActiveTile({Key? key, required this.ad}) : super(key: key);
@@ -70,6 +71,7 @@ class ActiveTile extends StatelessWidget {
                 onSelected: (choice) {
                   switch (choice.index) {
                     case 0:
+                      editAd(context);
                       break;
                     case 1:
                       break;
@@ -106,6 +108,11 @@ class ActiveTile extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> editAd(BuildContext context) async{
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateScreen(ad: ad)));
+  }
+
 }
 
 class MenuChoice {
