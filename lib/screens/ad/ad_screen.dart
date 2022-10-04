@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/ad.dart';
+import 'components/bottom_bar.dart';
 import 'components/description_panel.dart';
 import 'components/location_panel.dart';
 import 'components/main_panel.dart';
@@ -21,32 +22,38 @@ class AdScreen extends StatelessWidget {
         title: const Text('Anúncio'),
         centerTitle: true,
       ),
-      body: ListView(
+      body: Stack(
         children: [
-          CarouselSlider(
-            items: ad.images!
-                .map((url) => CachedNetworkImage(imageUrl: url))
-                .toList(),
-            options: CarouselOptions(
-              height: 360,
-              autoPlay: false,
-            ),
+          ListView(
+            children: [
+              CarouselSlider(
+                items: ad.images!
+                    .map((url) => CachedNetworkImage(imageUrl: url))
+                    .toList(),
+                options: CarouselOptions(
+                  height: 360,
+                  autoPlay: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    MainPanel(ad: ad),
+                    const Divider(color: Colors.black54, height: 2),
+                    DescriptionPanel(ad: ad),
+                    const Divider(color: Colors.black54, height: 2),
+                    LocationPanel(ad: ad),
+                    const Divider(color: Colors.black54, height: 2),
+                    UserPanel(ad: ad),
+                    const SizedBox(height: 92),
+                  ],
+                ),
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                MainPanel(ad: ad),
-                const Divider(color: Colors.black54, height: 2),
-                DescriptionPanel(ad: ad),
-                const Divider(color: Colors.black54, height: 2),
-                LocationPanel(ad: ad),
-                const Divider(color: Colors.black54, height: 2),
-                UserPanel(ad: ad),
-              ],
-            ),
-          )
+          BottomBar(ad: ad),
         ],
       ),
     );
