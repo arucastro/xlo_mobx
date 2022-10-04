@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:xlo_mobx/stores/user_manager_store.dart';
 
 import '../../models/ad.dart';
 import 'components/bottom_bar.dart';
@@ -10,8 +12,8 @@ import 'components/main_panel.dart';
 import 'components/user_panel.dart';
 
 class AdScreen extends StatelessWidget {
-  const AdScreen({Key? key, required this.ad}) : super(key: key);
-
+  AdScreen({Key? key, required this.ad}) : super(key: key);
+  final currentUser = GetIt.I<UserManagerStore>().user;
   final Ad ad;
 
   @override
@@ -47,13 +49,16 @@ class AdScreen extends StatelessWidget {
                     LocationPanel(ad: ad),
                     const Divider(color: Colors.black54, height: 2),
                     UserPanel(ad: ad),
-                    const SizedBox(height: 92),
+                    SizedBox(height: ad.status == AdStatus.PENDING
+                        || currentUser!.id! == ad.user!.id
+                        ? 0 : 92),
                   ],
                 ),
               )
             ],
           ),
-          BottomBar(ad: ad),
+          if(currentUser!.id! != ad.user!.id)
+            BottomBar(ad: ad),
         ],
       ),
     );

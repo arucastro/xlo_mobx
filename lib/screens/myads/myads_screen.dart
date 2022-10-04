@@ -3,6 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/stores/myads_store.dart';
 
 import 'components/active_tile.dart';
+import 'components/pending_tile.dart';
+import 'components/sold_tile.dart';
 
 class MyAdsScreen extends StatefulWidget {
   const MyAdsScreen({Key? key}) : super(key: key);
@@ -11,8 +13,8 @@ class MyAdsScreen extends StatefulWidget {
   State<MyAdsScreen> createState() => _MyAdsScreenState();
 }
 
-class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStateMixin{
-
+class _MyAdsScreenState extends State<MyAdsScreen>
+    with SingleTickerProviderStateMixin {
   final MyAdsStore myAdsStore = MyAdsStore();
 
   TabController? tabController;
@@ -28,19 +30,30 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meus anúncios',),
+        title: Text(
+          'Meus anúncios',
+        ),
         centerTitle: true,
         bottom: TabBar(
           controller: tabController,
           tabs: [
             Tab(
-              child: Text('Ativos', style: tabStyle,),
+              child: Text(
+                'Ativos',
+                style: tabStyle,
+              ),
             ),
             Tab(
-              child: Text('Pendentes', style: tabStyle,),
+              child: Text(
+                'Pendentes',
+                style: tabStyle,
+              ),
             ),
             Tab(
-              child: Text('Vendidos', style: tabStyle,),
+              child: Text(
+                'Vendidos',
+                style: tabStyle,
+              ),
             ),
           ],
         ),
@@ -48,19 +61,37 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
       body: TabBarView(
         controller: tabController,
         children: [
-          Observer(builder: (_){
-            if (myAdsStore.activeAds.isEmpty){
+          Observer(builder: (_) {
+            if (myAdsStore.activeAds.isEmpty) {
               return Container();
             }
             return ListView.builder(
                 itemCount: myAdsStore.activeAds.length,
-                itemBuilder: (_, index){
+                itemBuilder: (_, index) {
                   return ActiveTile(ad: myAdsStore.activeAds[index]);
+                });
+          }),
+          Observer(builder: (_) {
+            if (myAdsStore.activeAds.isEmpty) {
+              return Container();
+            }
+            return ListView.builder(
+                itemCount: myAdsStore.pendingAds.length,
+                itemBuilder: (_, index) {
+                  return PendingTile(ad: myAdsStore.pendingAds[index]);
+                });
+          }),
+          Observer(builder: (_){
+            if (myAdsStore.soldAds.isEmpty){
+              return Container();
+            }
+            return ListView.builder(
+                itemCount: myAdsStore.soldAds.length,
+                itemBuilder: (_, index){
+                  return SoldTile(ad: myAdsStore.soldAds[index]);
                 }
             );
           }),
-          Container(color: Colors.black,),
-          Container(color: Colors.green,),
         ],
       ),
     );
