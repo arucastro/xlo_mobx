@@ -5,9 +5,15 @@ import 'package:xlo_mobx/helpers/extensions.dart';
 import '../../../models/ad.dart';
 
 class ActiveTile extends StatelessWidget {
-  const ActiveTile({Key? key, required this.ad}) : super(key: key);
+  ActiveTile({Key? key, required this.ad}) : super(key: key);
 
   final Ad ad;
+
+  final List<MenuChoice> choices = [
+    MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit),
+    MenuChoice(index: 1, title: 'Vendido!', iconData: Icons.edit),
+    MenuChoice(index: 2, title: 'Excluir', iconData: Icons.delete),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +59,52 @@ class ActiveTile extends StatelessWidget {
                 ),
               ),
             ),
+            PopupMenuButton<MenuChoice>(
+              onSelected: (choice){
+                switch(choice.index){
+                  case 0:
+                    break;
+                  case 1:
+                    break;
+                  case 2:
+                    break;
+                }
+              },
+              itemBuilder: (_) {
+                return choices
+                    .map((choice) => PopupMenuItem<MenuChoice>(
+                          value: choice,
+                          child: Row(
+                            children: [
+                              Icon(
+                                choice.iconData,
+                                size: 20,
+                                color: Colors.purple,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                choice.title,
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.purple),
+                              )
+                            ],
+                          ),
+                        ))
+                    .toList();
+              },
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+class MenuChoice {
+  MenuChoice(
+      {required this.index, required this.title, required this.iconData});
+
+  final int index;
+  final String title;
+  final IconData iconData;
 }
