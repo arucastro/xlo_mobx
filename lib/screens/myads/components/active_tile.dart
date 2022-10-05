@@ -14,9 +14,9 @@ class ActiveTile extends StatelessWidget {
   final MyAdsStore? store;
 
   final List<MenuChoice> choices = [
-    MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit),
-    MenuChoice(index: 1, title: 'Vendido!', iconData: Icons.edit),
-    MenuChoice(index: 2, title: 'Excluir', iconData: Icons.delete),
+    MenuChoice(index: 0, title: ' Editar', iconData: Icons.edit),
+    MenuChoice(index: 1, title: ' Vendido!', iconData: Icons.check),
+    MenuChoice(index: 2, title: ' Excluir', iconData: Icons.delete),
   ];
 
   @override
@@ -76,8 +76,10 @@ class ActiveTile extends StatelessWidget {
                       editAd(context);
                       break;
                     case 1:
+                      soldAd(context);
                       break;
                     case 2:
+                      deleteAd(context);
                       break;
                   }
                 },
@@ -111,13 +113,73 @@ class ActiveTile extends StatelessWidget {
     );
   }
 
-  Future<void> editAd(BuildContext context) async{
-    final success = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateScreen(ad: ad)));
-    if (success != null && success){
+  Future<void> editAd(BuildContext context) async {
+    final success = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CreateScreen(ad: ad)));
+    if (success != null && success) {
       store?.refresh();
     }
   }
 
+  void soldAd(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Vendido!'),
+              content: Text('Confirmar a venda de ${ad.title}? Esta ação não pode ser desfeita'),
+              actions: [
+                TextButton(
+                    style: TextButton.styleFrom(backgroundColor: Colors.red),
+                    onPressed: Navigator.of(context).pop,
+                    child: Text(
+                      'Cancelar',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    )),
+                TextButton(
+                    style: TextButton.styleFrom(backgroundColor: Colors.orange),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      store?.soldAd(ad);
+                    },
+                    child: Text(
+                      'Confirmar',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    )),
+              ],
+            ));
+  }
+
+  void deleteAd(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('EXCLUIR'),
+          content: Text('Confirmar a exclusão de ${ad.title}? Esta ação não pode ser desfeita'),
+          actions: [
+            TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.orange),
+                onPressed: Navigator.of(context).pop,
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                )),
+            TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  store?.deleteAd(ad);
+                },
+                child: Text(
+                  'Confirmar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                )),
+          ],
+        ));
+  }
 }
 
 class MenuChoice {
