@@ -27,9 +27,9 @@ class PendingTile extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: CachedNetworkImage(
-                  imageUrl: ad.images!.isEmpty
+                  imageUrl: ad.images.isEmpty
                       ? 'https://static.thenounproject.com/png/194055-200.png'
-                      : ad.images!.first,
+                      : ad.images.first,
                   fit: BoxFit.cover,
                 ),
               ),

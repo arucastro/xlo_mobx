@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:xlo_mobx/components/empty_card.dart';
 import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/stores/home_store.dart';
 
@@ -122,24 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ));
                     }
                     if (homeStore.adList.isEmpty) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.border_clear,
-                            size: 100,
-                            color: Colors.white,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Nenhum anúncio encontrado...',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20),
-                          )
-                        ],
-                      );
+                      return EmptyCard(text: 'Nenhum anúncio encontrado...');
                     }
                     return ListView.builder(
                         controller: scrollController,
