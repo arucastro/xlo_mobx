@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
+import 'package:xlo_mobx/stores/myads_store.dart';
 
 import '../../../models/ad.dart';
 import '../../ad/ad_screen.dart';
 import '../../create/create_screen.dart';
 
 class ActiveTile extends StatelessWidget {
-  ActiveTile({Key? key, required this.ad}) : super(key: key);
+  ActiveTile({Key? key, required this.ad, this.store}) : super(key: key);
 
   final Ad ad;
+  final MyAdsStore? store;
 
   final List<MenuChoice> choices = [
     MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit),
@@ -35,9 +37,9 @@ class ActiveTile extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: CachedNetworkImage(
-                  imageUrl: ad.images!.isEmpty
+                  imageUrl: ad.images.isEmpty
                       ? 'https://static.thenounproject.com/png/194055-200.png'
-                      : ad.images!.first,
+                      : ad.images.first,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -110,7 +112,10 @@ class ActiveTile extends StatelessWidget {
   }
 
   Future<void> editAd(BuildContext context) async{
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateScreen(ad: ad)));
+    final success = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateScreen(ad: ad)));
+    if (success != null && success){
+      store?.refresh();
+    }
   }
 
 }

@@ -7,7 +7,9 @@ import 'components/pending_tile.dart';
 import 'components/sold_tile.dart';
 
 class MyAdsScreen extends StatefulWidget {
-  const MyAdsScreen({Key? key}) : super(key: key);
+  const MyAdsScreen({Key? key, this.initialPage = 0}) : super(key: key);
+
+  final int initialPage;
 
   @override
   State<MyAdsScreen> createState() => _MyAdsScreenState();
@@ -23,7 +25,8 @@ class _MyAdsScreenState extends State<MyAdsScreen>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController =
+        TabController(length: 3, vsync: this, initialIndex: widget.initialPage);
   }
 
   @override
@@ -36,7 +39,7 @@ class _MyAdsScreenState extends State<MyAdsScreen>
         centerTitle: true,
         bottom: TabBar(
           controller: tabController,
-          tabs: [
+          tabs: const [
             Tab(
               child: Text(
                 'Ativos',
@@ -58,42 +61,50 @@ class _MyAdsScreenState extends State<MyAdsScreen>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Observer(builder: (_) {
-            if (myAdsStore.activeAds.isEmpty) {
-              return Container();
-            }
-            return ListView.builder(
-                itemCount: myAdsStore.activeAds.length,
-                itemBuilder: (_, index) {
-                  return ActiveTile(ad: myAdsStore.activeAds[index]);
-                });
-          }),
-          Observer(builder: (_) {
-            if (myAdsStore.activeAds.isEmpty) {
-              return Container();
-            }
-            return ListView.builder(
-                itemCount: myAdsStore.pendingAds.length,
-                itemBuilder: (_, index) {
-                  return PendingTile(ad: myAdsStore.pendingAds[index]);
-                });
-          }),
-          Observer(builder: (_){
-            if (myAdsStore.soldAds.isEmpty){
-              return Container();
-            }
-            return ListView.builder(
-                itemCount: myAdsStore.soldAds.length,
-                itemBuilder: (_, index){
-                  return SoldTile(ad: myAdsStore.soldAds[index]);
+      body: Observer(builder: (_) {
+        if (myAdsStore.loading) {
+          return const Center(
+              child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.white)));
+        }
+          return TabBarView(
+            controller: tabController,
+            children: [
+              Observer(builder: (_) {
+                if (myAdsStore.activeAds.isEmpty) {
+                  return Container();
                 }
-            );
-          }),
-        ],
-      ),
+                return ListView.builder(
+                    itemCount: myAdsStore.activeAds.length,
+                    itemBuilder: (_, index) {
+                      return ActiveTile(
+                          ad: myAdsStore.activeAds[index], store: myAdsStore);
+                    });
+              }),
+              Observer(builder: (_) {
+                if (myAdsStore.activeAds.isEmpty) {
+                  return Container();
+                }
+                return ListView.builder(
+                    itemCount: myAdsStore.pendingAds.length,
+                    itemBuilder: (_, index) {
+                      return PendingTile(ad: myAdsStore.pendingAds[index]);
+                    });
+              }),
+              Observer(builder: (_) {
+                if (myAdsStore.soldAds.isEmpty) {
+                  return Container();
+                }
+                return ListView.builder(
+                    itemCount: myAdsStore.soldAds.length,
+                    itemBuilder: (_, index) {
+                      return SoldTile(ad: myAdsStore.soldAds[index]);
+                    });
+              }),
+            ],
+          );
+
+      }),
     );
   }
 }

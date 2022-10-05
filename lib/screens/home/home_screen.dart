@@ -22,6 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final homeStore = GetIt.I<HomeStore>();
 
+
+  @override
+  void initState() {
+    super.initState();
+    homeStore.resetPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     openSearch(BuildContext context) async {

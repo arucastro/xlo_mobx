@@ -14,20 +14,30 @@ abstract class _MyAdsStore with Store {
   }
 
   @computed
-  List<Ad> get activeAds => allAds.where((ad) => ad.status == AdStatus.ACTIVE).toList();
-  List<Ad> get pendingAds => allAds.where((ad) => ad.status == AdStatus.PENDING).toList();
-  List<Ad> get soldAds => allAds.where((ad) => ad.status == AdStatus.SOLD).toList();
+  List<Ad> get activeAds =>
+      allAds.where((ad) => ad.status == AdStatus.ACTIVE).toList();
+
+  List<Ad> get pendingAds =>
+      allAds.where((ad) => ad.status == AdStatus.PENDING).toList();
+
+  List<Ad> get soldAds =>
+      allAds.where((ad) => ad.status == AdStatus.SOLD).toList();
 
   @observable
-  List<Ad> allAds =[];
+  List<Ad> allAds = [];
+
+  @observable
+  bool loading = false;
 
   Future<void> _getMyAds() async {
     final user = GetIt.I<UserManagerStore>().user;
 
     try {
+      loading = true;
       allAds = await AdRepository().getMyAds(user!);
-    }catch(e){
-    }
+      loading = false;
+    } catch (e) {}
   }
 
+  void refresh() => _getMyAds();
 }

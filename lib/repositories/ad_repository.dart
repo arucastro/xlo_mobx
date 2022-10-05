@@ -89,11 +89,15 @@ class AdRepository {
 
   Future<void> save(Ad ad) async {
     try {
-      final parseImages = await saveImages(ad.images!);
+      final parseImages = await saveImages(ad.images);
 
       final parseUser = await ParseUser.currentUser() as ParseUser;
 
       final adObject = ParseObject(keyAdTable);
+
+      if(ad.id != null) {
+        adObject.set<String>(keyAdId, ad.id!);
+      }
 
       final parseAcl = ParseACL(owner: parseUser);
       parseAcl.setPublicReadAccess(allowed: true);
@@ -164,9 +168,7 @@ class AdRepository {
           }
           parseImages.add(parseFile);
         } else {
-          final parseFile = ParseFile(null);
-          parseFile.name = path.basename(image);
-          parseFile.url = image;
+          final parseFile = ParseFile(null, name: path.basename(image),url: image);
           parseImages.add(parseFile);
         }
       }

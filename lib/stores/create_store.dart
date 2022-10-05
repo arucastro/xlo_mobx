@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/repositories/ad_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
@@ -17,12 +16,12 @@ class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
 
-  _CreateStore(Ad ad){
-    title = ad.title;
-    description = ad.description;
+  _CreateStore(this.ad){
+    title = ad.title ?? '';
+    description = ad.description ?? '';
     images = ad.images.asObservable();
     category = ad.category;
-    priceText = ad.price?.toStringAsFixed(2);
+    priceText = null;
     hidePhone = ad.hidePhone ?? false;
 
     if(ad.address != null){
@@ -31,6 +30,8 @@ abstract class _CreateStore with Store {
       cepStore = CepStore('');
     }
   }
+
+  final Ad ad;
 
   ObservableList images = ObservableList();
 
@@ -178,7 +179,6 @@ abstract class _CreateStore with Store {
 
   @action
   Future<void> _sendPressed() async{
-    final ad = Ad();
     ad.title = title;
     ad.description = description;
     ad.category = category;

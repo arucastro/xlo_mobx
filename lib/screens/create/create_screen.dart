@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'package:get_it/get_it.dart';import 'package:mobx/mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/create/components/cep_field.dart';
+import 'package:xlo_mobx/screens/myads/myads_screen.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 
@@ -25,8 +27,9 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-
-  _CreateScreenState(Ad? ad) : editing = ad != null, createStore = CreateStore(ad ?? Ad());
+  _CreateScreenState(Ad? ad)
+      : editing = ad != null,
+        createStore = CreateStore(ad ?? Ad());
 
   bool editing = false;
 
@@ -36,8 +39,14 @@ class _CreateScreenState extends State<CreateScreen> {
   void initState() {
     super.initState();
 
-    when((_) => createStore.savedAd, (){
-      GetIt.I<PageStore>().setPage(0);
+    when((_) => createStore.savedAd, () {
+      if (editing) {
+        Navigator.of(context).pop(true);
+      } else {
+        GetIt.I<PageStore>().setPage(0);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => MyAdsScreen(initialPage: 1)));
+      }
     });
   }
 
@@ -69,22 +78,24 @@ class _CreateScreenState extends State<CreateScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                         Text(
-                          'Salvando anúncio',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.purple,
-                          ),
-                           textAlign: TextAlign.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Salvando anúncio',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple,
                         ),
-                        SizedBox(height: 16,),
-                           CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.purple),
-                        ),
-                      ],
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.purple),
+                      ),
+                    ],
                   ),
                 );
               } else {
