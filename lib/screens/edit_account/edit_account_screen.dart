@@ -31,17 +31,23 @@ class EditAccountScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     LayoutBuilder(builder: (_, constraints) {
-                      return ToggleSwitch(
-                        minWidth: constraints.biggest.width / 2.01,
-                        labels: const ['Particular', 'Profissional'],
-                        cornerRadius: 20,
-                        inactiveBgColor: Colors.grey,
-                        initialLabelIndex: 0,
-                        onToggle: store.setUserType,
+                      return IgnorePointer(
+                        ignoring: store.loading,
+                        child: ToggleSwitch(
+                          fontSize: 18,
+                          minWidth: constraints.biggest.width / 2.01,
+                          labels: const ['Particular', 'Profissional'],
+                          cornerRadius: 20,
+                          inactiveBgColor: Colors.grey,
+                          initialLabelIndex: store.userType.index,
+                          onToggle: store.setUserType,
+                        ),
                       );
                     }),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !store.loading,
+                      initialValue: store.name,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         isDense: true,
@@ -52,6 +58,8 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !store.loading,
+                      initialValue: store.phone,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         isDense: true,
@@ -67,6 +75,7 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      enabled: !store.loading,
                       obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -76,6 +85,7 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !store.loading,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -94,8 +104,8 @@ class EditAccountScreen extends StatelessWidget {
                             backgroundColor: Colors.orange,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25))),
-                        onPressed: store.isFormValid ? () {} : null,
-                        child: const Text(
+                        onPressed: store.savePressed,
+                        child: store.loading ? CircularProgressIndicator() : const Text(
                           'Salvar',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
@@ -110,7 +120,7 @@ class EditAccountScreen extends StatelessWidget {
                             backgroundColor: Colors.red,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25))),
-                        onPressed: (){},
+                        onPressed: store.loading ? null : Navigator.of(context).pop,
                         child: const Text(
                           'Sair',
                           style: TextStyle(
