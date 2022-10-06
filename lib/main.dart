@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:xlo_mobx/repositories/category_repository.dart';
-import 'package:xlo_mobx/repositories/cep_repository.dart';
-import 'package:xlo_mobx/repositories/ibge_repository.dart';
 import 'package:xlo_mobx/screens/base/base_screen.dart';
 import 'package:xlo_mobx/stores/category_store.dart';
+import 'package:xlo_mobx/stores/favorite_store.dart';
 import 'package:xlo_mobx/stores/home_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
@@ -24,6 +22,7 @@ void setupLocators(){
   GetIt.I.registerSingleton(HomeStore());
   GetIt.I.registerSingleton(UserManagerStore());
   GetIt.I.registerSingleton(CategoryStore());
+  GetIt.I.registerSingleton(FavoriteStore());
 }
 
 Future<void> initializeParse() async {
