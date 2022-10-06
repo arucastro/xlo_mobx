@@ -16,10 +16,10 @@ class CustomDrawerHeader extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pop();
-        if (userManagerStore.isUserLogged){
+        if (userManagerStore.isUserLogged) {
           userManagerStore.logout();
           //GetIt.I<PageStore>().setPage(4);
-        }else {
+        } else {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => LoginScreen(),
@@ -47,21 +47,24 @@ class CustomDrawerHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    userManagerStore.isUserLogged ? userManagerStore.user!.name! :
-                    'Acesse sua conta!',
+                    userManagerStore.isUserLogged
+                        ? userManagerStore.user!.name!
+                        : 'Acesse sua conta!',
                     style: const TextStyle(
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    userManagerStore.isUserLogged ? userManagerStore.user!.email! :
-                    'Clique aqui.',
+                    userManagerStore.isUserLogged
+                        ? userManagerStore.user!.email!
+                        : 'Clique aqui.',
                     style: const TextStyle(
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.w500),
-                  )
+                  ),
+                  if (userManagerStore.isUserLogged) const Icon(Icons.logout, color: Colors.white, size: 25,)
                 ],
               ),
             )

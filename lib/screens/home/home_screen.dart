@@ -94,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TopBar(),
             Expanded(
               child: Stack(
+                fit: StackFit.expand,
                 children: [
                   Observer(builder: (_) {
                     if (homeStore.error != null) {
