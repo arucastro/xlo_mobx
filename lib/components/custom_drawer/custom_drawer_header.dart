@@ -17,7 +17,7 @@ class CustomDrawerHeader extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pop();
         if (userManagerStore.isUserLogged){
-          UserRepository().doUserLogout();
+          userManagerStore.logout();
           //GetIt.I<PageStore>().setPage(4);
         }else {
           Navigator.of(context).push(

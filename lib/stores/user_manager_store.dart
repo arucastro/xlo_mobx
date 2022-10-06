@@ -16,7 +16,7 @@ abstract class _UserManagerStore with Store {
   User? user;
 
   @action
-  void setUser(User value) => user = value;
+  void setUser(User? value) => user = value;
 
   @computed
   bool get isUserLogged => user != null;
@@ -26,5 +26,10 @@ abstract class _UserManagerStore with Store {
     if (user != null){
       setUser(user);
     }
+  }
+
+  Future<void> logout() async{
+    await UserRepository().doUserLogout();
+    setUser(null);
   }
 }

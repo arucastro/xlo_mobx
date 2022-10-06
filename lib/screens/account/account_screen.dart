@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/edit_account/edit_account_screen.dart';
@@ -30,46 +31,48 @@ class AccountScreen extends StatelessWidget {
                 height: 120,
                 child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            GetIt
-                                .I<UserManagerStore>()
-                                .user!
-                                .name!,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.purple,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            GetIt
-                                .I<UserManagerStore>()
-                                .user!
-                                .email!,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            GetIt
-                                .I<UserManagerStore>()
-                                .user!
-                                .phone!,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
+                    Observer(builder: (_){
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              GetIt
+                                  .I<UserManagerStore>()
+                                  .user!
+                                  .name!,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              GetIt
+                                  .I<UserManagerStore>()
+                                  .user!
+                                  .email!,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              GetIt
+                                  .I<UserManagerStore>()
+                                  .user!
+                                  .phone!,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                     Align(
                       alignment: Alignment.topRight,
                       child: TextButton(
