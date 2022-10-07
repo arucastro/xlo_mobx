@@ -7,10 +7,10 @@ import 'package:xlo_mobx/repositories/table_keys.dart';
 class FavoriteRepository {
   Future<void> save({required Ad ad, required User user}) async {
     final favoriteObject = ParseObject(keyFavoritesTable);
+    final parseAd = ParseObject(keyAdTable)..set<String>(keyAdId, ad.id!);
 
     favoriteObject.set<String>(keyFavoritesOwner, user.id!);
-    favoriteObject.set<String>(keyFavoritesAd, ad.id!);
-
+    favoriteObject.set(keyFavoritesAd, parseAd.toPointer());
     final response = await favoriteObject.save();
 
     if (!response.success) {
@@ -25,7 +25,7 @@ class FavoriteRepository {
           QueryBuilder<ParseObject>(ParseObject(keyFavoritesTable));
 
       queryBuilder.whereEqualTo(keyFavoritesOwner, user.id);
-      queryBuilder.whereEqualTo(keyFavoritesAd, ad.id);
+      queryBuilder.whereEqualTo(keyFavoritesAd, ParseObject(keyAdTable)..set<String>(keyAdId, ad.id!));
 
       final response = await queryBuilder.query();
 
