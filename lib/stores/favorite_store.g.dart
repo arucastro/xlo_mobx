@@ -17,6 +17,14 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
     return _$toggleFavoriteAsyncAction.run(() => super.toggleFavorite(ad));
   }
 
+  late final _$_getFavoritesListAsyncAction =
+      AsyncAction('_FavoriteStore._getFavoritesList', context: context);
+
+  @override
+  Future<void> _getFavoritesList() {
+    return _$_getFavoritesListAsyncAction.run(() => super._getFavoritesList());
+  }
+
   @override
   String toString() {
     return '''
