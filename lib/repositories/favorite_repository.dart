@@ -8,15 +8,34 @@ class FavoriteRepository {
   Future<void> save({required Ad ad, required User user}) async {
     final favoriteObject = ParseObject(keyFavoritesTable);
 
-      favoriteObject.set<String>(keyFavoritesOwner, user.id!);
-      favoriteObject.set<String>(
-          keyFavoritesAd, ad.id!);
+    favoriteObject.set<String>(keyFavoritesOwner, user.id!);
+    favoriteObject.set<String>(keyFavoritesAd, ad.id!);
 
-      final response = await favoriteObject.save();
+    final response = await favoriteObject.save();
 
-      if (!response.success) {
-        return Future.error(
-            ParseErrors.getDescription(response.error!.code) as String);
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code) as String);
+    }
+  }
+
+  Future<void> delete(Ad ad, User user) async {
+    try {
+      final queryBuilder =
+          QueryBuilder<ParseObject>(ParseObject(keyFavoritesTable));
+
+      queryBuilder.whereEqualTo(keyFavoritesOwner, user.id);
+      queryBuilder.whereEqualTo(keyFavoritesAd, ad.id);
+
+      final response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        for (final f in response.results as List<ParseObject>) {
+          await f.delete();
+        }
       }
+    } catch (e) {
+      return Future.error('Falha ao deletar favorito');
+    }
   }
 }

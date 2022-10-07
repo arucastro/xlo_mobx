@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/stores/favorite_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
@@ -30,9 +31,11 @@ class AdScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           if (ad.status == AdStatus.ACTIVE && userManagerStore.isUserLogged)
-            IconButton(
-                onPressed: () => favoriteStore.toggleFavorite(ad),
-                icon: Icon(Icons.star_border)),
+            Observer(builder: (_){
+              return IconButton(
+                  onPressed: () => favoriteStore.toggleFavorite(ad),
+                  icon: Icon(favoriteStore.favoritesList.any((a) => a.id == ad.id) ? Icons.star : Icons.star_border));
+            })
         ],
       ),
       body: Stack(
